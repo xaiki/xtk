@@ -18,7 +18,6 @@ libxtk_1_0_la_SOURCES =  $(libxtk_1_0_la_HEADERS) \
                     gtkcellrendererwidget.c
 libxtk_1_0_la_LDFLAGS = -no-undefined -version-info @XTK_LT_CURRENT@:@XTK_LT_REVISION@:@XTK_LT_AGE@
 
-
 -include $(INTROSPECTION_MAKEFILE)
 INTROSPECTION_GIRS =
 INTROSPECTION_SCANNER_ARGS = --add-include-path=$(srcdir)
@@ -40,5 +39,5 @@ gir_DATA = $(INTROSPECTION_GIRS)
 typelibdir = $(libdir)/girepository-1.0
 typelib_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
 
-#CLEANFILES += $(gir_DATA) $(typelib_DATA)
+CLEANFILES += $(gir_DATA) $(typelib_DATA)
 endif
