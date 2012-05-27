@@ -42,22 +42,22 @@
 #include "deprecated/gtkstyle.h"
 */
 
-#include "GtkCellRendererWidget2.h"
+#include "gtkcellrendererwidget.h"
 #include "gtk/gtk.h"
 
 /**
- * SECTION:gtkcellrendererwidget
+ * SECTION:xtkcellrendererwidget
  * @Short_description: Renders a spinning animation in a cell
- * @Title: GtkCellRendererWidget
+ * @Title: Xtkcellrendererwidget
  * @See_also: #GtkWidget, #GtkCellRendererProgress
  *
- * GtkCellRendererWidget renders a spinning animation in a cell, very
+ * Xtkcellrendererwidget renders a spinning animation in a cell, very
  * similar to #GtkWidget. It can often be used as an alternative
  * to a #GtkCellRendererProgress for displaying indefinite activity,
  * instead of actual progress.
  *
- * To start the animation in a cell, set the #GtkCellRendererWidget:active
- * property to %TRUE and increment the #GtkCellRendererWidget:pulse property
+ * To start the animation in a cell, set the #Xtkcellrendererwidget:active
+ * property to %TRUE and increment the #Xtkcellrendererwidget:pulse property
  * at regular intervals. The usual way to set the cell renderer properties
  * for each cell is to bind them to columns in your tree model using e.g.
  * gtk_tree_view_column_add_attribute().
@@ -73,7 +73,7 @@ enum {
   PROP_SIZE
 };
 
-struct _GtkCellRendererWidgetPrivate
+struct _XtkcellrendererwidgetPrivate
 {
   GHashTable *whash;
 	GtkWidget *widget;
@@ -111,10 +111,10 @@ static void gtk_cell_renderer_widget_render       (GtkCellRenderer      *cell,
                                                     const GdkRectangle   *cell_area,
                                                     GtkCellRendererState  flags);
 
-G_DEFINE_TYPE (GtkCellRendererWidget, gtk_cell_renderer_widget, GTK_TYPE_CELL_RENDERER)
+G_DEFINE_TYPE (Xtkcellrendererwidget, gtk_cell_renderer_widget, GTK_TYPE_CELL_RENDERER)
 
 static void
-gtk_cell_renderer_widget_class_init (GtkCellRendererWidgetClass *klass)
+gtk_cell_renderer_widget_class_init (XtkcellrendererwidgetClass *klass)
 {
   xatrace();
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
@@ -127,7 +127,7 @@ gtk_cell_renderer_widget_class_init (GtkCellRendererWidgetClass *klass)
   cell_class->render = gtk_cell_renderer_widget_render;
   cell_class->start_editing = gtk_cell_renderer_widget_start_editing;
 
-  /* GtkCellRendererWidget:active:
+  /* Xtkcellrendererwidget:active:
    *
    * Whether the widget is active (ie. shown) in the cell
    *
@@ -141,7 +141,7 @@ gtk_cell_renderer_widget_class_init (GtkCellRendererWidgetClass *klass)
                                                          FALSE,
                                                          G_PARAM_READWRITE));
   /**
-   * GtkCellRendererWidget:widget:
+   * Xtkcellrendererwidget:widget:
    *
    * the #GtkWidget to attach to this cell.
    * Ideally this should be automatic, but there is still lots of vodo for me there.
@@ -156,7 +156,7 @@ gtk_cell_renderer_widget_class_init (GtkCellRendererWidgetClass *klass)
                                                         GTK_TYPE_WIDGET,
                                                         G_PARAM_READWRITE));
   /**
-   * GtkCellRendererWidget:size:
+   * Xtkcellrendererwidget:size:
    *
    * The #GtkIconSize value that specifies the size of the rendered widget.
    *
@@ -171,7 +171,7 @@ gtk_cell_renderer_widget_class_init (GtkCellRendererWidgetClass *klass)
                                                       G_PARAM_READWRITE));
 
 
-  g_type_class_add_private (object_class, sizeof (GtkCellRendererWidgetPrivate));
+  g_type_class_add_private (object_class, sizeof (XtkcellrendererwidgetPrivate));
 }
 
 static gboolean
@@ -205,7 +205,7 @@ static void
 gtk_offscreen_window_damaged_cb (GtkWidget *window, GdkEvent *event, GtkWidget *cell)
 {
 
-  GtkCellRendererWidgetPrivate *priv = GTK_CELL_RENDERER_WIDGET(cell)->priv;
+  XtkcellrendererwidgetPrivate *priv = GTK_CELL_RENDERER_WIDGET(cell)->priv;
 
 /*  if (priv->treeview)
     gtk_cell_renderer_widget_cell_queue_redraw (window, event, priv->treeview); * /
@@ -218,13 +218,13 @@ gtk_offscreen_window_damaged_cb (GtkWidget *window, GdkEvent *event, GtkWidget *
 }
 */
 static void
-gtk_cell_renderer_widget_init (GtkCellRendererWidget *cell)
+gtk_cell_renderer_widget_init (Xtkcellrendererwidget *cell)
 {
   xatrace();
 
   cell->priv = G_TYPE_INSTANCE_GET_PRIVATE (cell,
                                             GTK_TYPE_CELL_RENDERER_WIDGET,
-                                            GtkCellRendererWidgetPrivate);
+                                            XtkcellrendererwidgetPrivate);
 
   cell->priv->whash = g_hash_table_new(NULL, NULL);
 }
@@ -250,8 +250,8 @@ gtk_cell_renderer_widget_get_property (GObject    *object,
                                         GValue     *value,
                                         GParamSpec *pspec)
 {
-  xatrace();  GtkCellRendererWidget *cell = GTK_CELL_RENDERER_WIDGET (object);
-  GtkCellRendererWidgetPrivate *priv = cell->priv;
+  xatrace();  Xtkcellrendererwidget *cell = GTK_CELL_RENDERER_WIDGET (object);
+  XtkcellrendererwidgetPrivate *priv = cell->priv;
 
   switch (param_id)
     {
@@ -284,8 +284,8 @@ gtk_cell_renderer_widget_set_property (GObject      *object,
                                         const GValue *value,
                                         GParamSpec   *pspec)
 {
-  xatrace();  GtkCellRendererWidget *cell = GTK_CELL_RENDERER_WIDGET (object);
-  GtkCellRendererWidgetPrivate *priv = cell->priv;
+  xatrace();  Xtkcellrendererwidget *cell = GTK_CELL_RENDERER_WIDGET (object);
+  XtkcellrendererwidgetPrivate *priv = cell->priv;
   GtkWidget *window;
 
   switch (param_id)
@@ -334,8 +334,8 @@ gtk_cell_renderer_widget_get_size (GtkCellRenderer    *cellr,
                                     gint               *width,
                                     gint               *height)
 {
-  xatrace();  GtkCellRendererWidget *cell = GTK_CELL_RENDERER_WIDGET (cellr);
-  GtkCellRendererWidgetPrivate *priv = cell->priv;
+  xatrace();  Xtkcellrendererwidget *cell = GTK_CELL_RENDERER_WIDGET (cellr);
+  XtkcellrendererwidgetPrivate *priv = cell->priv;
 
   if (x_offset)
     *x_offset = 0;
@@ -375,8 +375,8 @@ gtk_cell_renderer_widget_start_editing (GtkCellRenderer     *cellr,
                                         const GdkRectangle  *cell_area,
                                         GtkCellRendererState flags)
 {
-  xatrace();  GtkCellRendererWidget *cell = GTK_CELL_RENDERER_WIDGET (cellr);
-  GtkCellRendererWidgetPrivate *priv = cell->priv;
+  xatrace();  Xtkcellrendererwidget *cell = GTK_CELL_RENDERER_WIDGET (cellr);
+  XtkcellrendererwidgetPrivate *priv = cell->priv;
   GtkWidget *widget = priv->widget;
 
   if (!widget)
@@ -407,8 +407,8 @@ gtk_cell_renderer_widget_render (GtkCellRenderer      *cellr,
                                   const GdkRectangle   *cell_area,
                                   GtkCellRendererState  flags)
 {
-  xatrace();  GtkCellRendererWidget *cell = GTK_CELL_RENDERER_WIDGET (cellr);
-  GtkCellRendererWidgetPrivate *priv = cell->priv;
+  xatrace();  Xtkcellrendererwidget *cell = GTK_CELL_RENDERER_WIDGET (cellr);
+  XtkcellrendererwidgetPrivate *priv = cell->priv;
   GtkWidget *widget = priv->widget;
   GtkWidget *window;
   GtkAllocation *alloc = (GtkAllocation *) cell_area;
@@ -462,186 +462,21 @@ gtk_cell_renderer_widget_render (GtkCellRenderer      *cellr,
   cairo_restore (cr);
 }
 
-void treestore_set_widget(GtkTreeStore * tstore, GtkTreeIter * iter,
-                           const char * label, GtkWidget * widget)
-{
-  xatrace();   gtk_tree_store_set(tstore, iter, 0, label, 1, FALSE, 3, TRUE, 4, TRUE,
-                      5, widget, -1);
-  printf ("widget is: %p\n", widget);
-   //   gtk_object_sink(GTK_OBJECT(widget));
-}
-
-GtkBox *make_box ()
-{
-  GtkWidget *box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
-  GtkWidget *label = gtk_label_new ("embeded label test");
-  GtkWidget *image = gtk_image_new_from_stock (GTK_STOCK_NEW, GTK_ICON_SIZE_DIALOG);
-  GtkWidget *spinner = gtk_spinner_new ();
-  GtkWidget *button = gtk_button_new_with_mnemonic ("Test Embeded Button");
-  gtk_spinner_start (GTK_SPINNER(spinner));
-
-  gtk_box_pack_start (GTK_BOX(box), GTK_WIDGET(image),   TRUE, TRUE, 0);
-  gtk_box_pack_start (GTK_BOX(box), GTK_WIDGET(spinner), TRUE, TRUE, 0);
-  gtk_box_pack_start (GTK_BOX(box), GTK_WIDGET(label),   TRUE, TRUE, 0);
-  gtk_box_pack_start (GTK_BOX(box), GTK_WIDGET(button),  TRUE, TRUE, 0);
-
-  return GTK_BOX(box);
-}
-
-void test_treeview(GtkScrolledWindow * sw)
-{
-  xatrace();	GtkCellRenderer * r2;
-
-	GtkSpinner *the_spinner = GTK_SPINNER(gtk_spinner_new());
-  GtkLabel   *the_label   = GTK_LABEL  (gtk_label_new("test label"));
-  GtkBox     *the_box     = make_box();
-   /*gtk_widget_show(GTK_WIDGET(the_spinner));*/
-   printf("new the_spinner = %p\n", the_spinner);
-   printf("new the_label = %p\n", the_label);
-   printf("new the_box = %p\n", the_box);
-   /*   g_signal_connect(G_OBJECT(the_spinner), "destroy",
-                    G_CALLBACK(the_spinner_destroyed), 0);
-   g_signal_connect(G_OBJECT(the_spinner), "expose-event",
-                    G_CALLBACK(the_spinner_is_exposed), 0);
-   */
-   GtkTreeStore * tstore = gtk_tree_store_new(6,
-                           G_TYPE_STRING,  /* label */
-                           G_TYPE_BOOLEAN, /* is_separator */
-                           G_TYPE_STRING,  /* contents */
-                           G_TYPE_BOOLEAN, /* contents.visible */
-                           G_TYPE_BOOLEAN, /* contents.editable */
-                           G_TYPE_OBJECT   /* contents.widget */);
-   GtkWidget * treeview = gtk_tree_view_new_with_model(GTK_TREE_MODEL(tstore));
-   /*   g_signal_connect(G_OBJECT(treeview), "expose-event",
-                    G_CALLBACK(treeview_expose_model_widgets), 0);
-   */
-   /*
-   gtk_tree_view_set_row_separator_func(GTK_TREE_VIEW(treeview),
-                                        is_treeview_row_a_separator, 0, 0);
-   */
-
-   GtkCellRenderer * r1 = gtk_cell_renderer_text_new();
-   GtkTreeViewColumn * col1 = gtk_tree_view_column_new_with_attributes(
-                              "Label", r1, "text", 0, NULL);
-   gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), col1);
-
-   r2 = gtk_cell_renderer_widget_new();
-   GtkTreeViewColumn * col2 = gtk_tree_view_column_new_with_attributes(
-                              "Contents", r2, "widget", 5, NULL);
-   gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), col2);
-
-   gtk_tree_view_set_rules_hint(GTK_TREE_VIEW(treeview), TRUE);
-   gtk_tree_view_set_headers_visible(GTK_TREE_VIEW(treeview), FALSE);
-   gtk_container_add(GTK_CONTAINER(sw), treeview);
-
-   GtkTreeIter pi, ci, gi;
-   gtk_tree_store_append(tstore, &pi, 0);
-   gtk_tree_store_set(tstore, &pi, 0, "Parent 1", 1, FALSE,
-                      2, "Value 1", 3, FALSE, 4, TRUE, -1);
-
-   gtk_tree_store_append(tstore, &ci, &pi);
-   gtk_tree_store_set(tstore, &ci, 0, "Child 1.1", 1, FALSE,
-                      2, "Value 1.1", 3, TRUE, 4, TRUE, -1);
-
-   gtk_tree_store_append(tstore, &ci, &pi);
-   gtk_tree_store_set(tstore, &ci, 0, "Child 1.2", 1, FALSE,
-                      2, "Value 1.2", 3, TRUE, 4, TRUE, -1);
-
-   gtk_tree_store_append(tstore, &ci, &pi);
-   gtk_tree_store_set(tstore, &ci, 0, "Child 1.3", 1, FALSE,
-                      2, "Value 1.3", 3, TRUE, 4, TRUE, -1);
-
-   gtk_tree_store_append(tstore, &pi, 0);
-   gtk_tree_store_set(tstore, &pi, 0, "Parent 2", 1, FALSE,
-                      2, "Value 2", 3, FALSE, 4, TRUE, -1);
-
-   gtk_tree_store_append(tstore, &ci, &pi);
-   gtk_tree_store_set(tstore, &ci, 0, "Child 2.1", 1, FALSE,
-                      2, "Value 2.1", 3, FALSE, 4, TRUE, -1);
-
-   gtk_tree_store_append(tstore, &gi, &ci);
-   gtk_tree_store_set(tstore, &gi, 0, "Grandchild 2.1.1", 1, FALSE,
-                      2, "Value 2.1.1", 3, FALSE, 4, TRUE, 5, GTK_WIDGET(the_label), -1);
-
-   gtk_tree_store_append(tstore, &gi, &ci);
-   gtk_tree_store_set(tstore, &gi, 0, "Grandchild 2.1.2", 1, FALSE,
-                      2, "Value 2.1.2", 3, TRUE, 4, TRUE, 5, GTK_WIDGET(the_spinner), -1);
-
-   gtk_tree_store_append(tstore, &gi, &ci);
-   gtk_tree_store_set(tstore, &gi, 0, "Grandchild 2.1.3", 1, FALSE,
-                      2, "Value 2.1.3", 3, TRUE, 4, TRUE, 5, GTK_WIDGET(the_box), -1);
-
-   gtk_tree_store_append(tstore, &ci, &pi);
-   gtk_tree_store_set(tstore, &ci, 0, "Child 2.2", 1, FALSE,
-                      2, "Value 2.2", 3, TRUE, 4, TRUE, -1);
-
-   gtk_tree_store_append(tstore, &ci, &pi);
-   gtk_tree_store_set(tstore, &ci, 0, "Child 2.3", 1, FALSE,
-                      2, "Value 2.3", 3, TRUE, 4, TRUE, -1);
-
-   gtk_tree_view_expand_row(GTK_TREE_VIEW(treeview),
-                            gtk_tree_model_get_path(GTK_TREE_MODEL(tstore), &pi),
-                            TRUE /*open_all*/);
-
-   gtk_tree_store_append(tstore, &pi, 0);
-   gtk_tree_store_set(tstore, &pi, 0, "Separator", 1, TRUE,
-                      2, "(separator)", 3, FALSE, 4, TRUE, -1);
-
-   gtk_tree_store_append(tstore, &pi, 0);
-   gtk_tree_store_set(tstore, &pi, 0, "Parent 3", 1, FALSE,
-                      2, "Value 3", 3, FALSE, 4, TRUE, -1);
-
-   gtk_tree_store_append(tstore, &ci, &pi);
-   gtk_tree_store_set(tstore, &ci, 0, "Child 3.1", 1, FALSE,
-                      2, "Value 3.1", 3, TRUE, 4, TRUE, -1);
-
-   gtk_tree_store_append(tstore, &ci, &pi);
-   gtk_tree_store_set(tstore, &ci, 0, "Child 3.2", 1, FALSE,
-                      2, "Value 3.2", 3, TRUE, 4, TRUE, -1);
-
-   gtk_tree_store_append(tstore, &ci, &pi);
-   gtk_tree_store_set(tstore, &ci, 0, "Child 3.3", 1, FALSE,
-                      2, "Value 3.3", 3, TRUE, 4, TRUE, -1);
-
-   g_object_unref(G_OBJECT(tstore));
-}
-
 GType gtk_cell_renderer_widget_register_type()
 {
-  xatrace();   static const GTypeInfo renderer_widget_info =
+     static const GTypeInfo renderer_widget_info =
    {
-     sizeof(struct _GtkCellRendererWidgetClass),
+     sizeof(struct _XtkcellrendererwidgetClass),
      0,    /* base_init */
      0,    /* base_finalize */
      (GClassInitFunc) gtk_cell_renderer_widget_class_init,
      0,    /* class_finalize */
      0,    /* class_data */
-     sizeof(GtkCellRendererWidget),
+     sizeof(Xtkcellrendererwidget),
      0,    /* n_preallocs */
      (GInstanceInitFunc) gtk_cell_renderer_widget_init,
    };
    return g_type_register_static(GTK_TYPE_CELL_RENDERER,
-                                 "xaGtkCellRendererWidget",
+                                 "Xtkcellrendererwidget",
                                  &renderer_widget_info, 0);
-}
-
-int main(int argc, char ** argv)
-{
-  xatrace();
-   gtk_init(&argc, &argv);
-//   GtkCellRendererWidget *cell_renderer_widget_type = GTK_CELL_RENDERER_WIDGET(gtk_cell_renderer_widget_register_type());
-
-   GtkWidget * window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-   gtk_window_set_default_size(GTK_WINDOW(window), 500, 300);
-   g_signal_connect(G_OBJECT(window), "destroy", G_CALLBACK(gtk_main_quit), 0);
-   g_signal_connect(G_OBJECT(window), "delete_event", G_CALLBACK(gtk_main_quit),
-                    0);
-   GtkWidget * sw = gtk_scrolled_window_new(0, 0);
-   test_treeview(GTK_SCROLLED_WINDOW(sw));
-   gtk_container_add(GTK_CONTAINER(window), sw);
-   gtk_widget_show_all(window);
-
-   gtk_main();
-   gtk_widget_destroy(sw);
-   return 0;
 }

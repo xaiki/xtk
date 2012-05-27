@@ -31,25 +31,25 @@
 G_BEGIN_DECLS
 
 #define GTK_TYPE_CELL_RENDERER_WIDGET            (gtk_cell_renderer_widget_get_type ())
-#define GTK_CELL_RENDERER_WIDGET(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_CELL_RENDERER_WIDGET, GtkCellRendererWidget))
-#define GTK_CELL_RENDERER_WIDGET_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_CELL_RENDERER_WIDGET, GtkCellRendererWidgetClass))
+#define GTK_CELL_RENDERER_WIDGET(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_CELL_RENDERER_WIDGET, Xtkcellrendererwidget))
+#define GTK_CELL_RENDERER_WIDGET_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_CELL_RENDERER_WIDGET, XtkcellrendererwidgetClass))
 #define GTK_IS_CELL_RENDERER_WIDGET(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_CELL_RENDERER_WIDGET))
 #define GTK_IS_CELL_RENDERER_WIDGET_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_CELL_RENDERER_WIDGET))
-#define GTK_CELL_RENDERER_WIDGET_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_CELL_RENDERER_WIDGET, GtkCellRendererWidgetClass))
+#define GTK_CELL_RENDERER_WIDGET_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_CELL_RENDERER_WIDGET, XtkcellrendererwidgetClass))
 
-typedef struct _GtkCellRendererWidget        GtkCellRendererWidget;
-typedef struct _GtkCellRendererWidgetClass   GtkCellRendererWidgetClass;
-typedef struct _GtkCellRendererWidgetPrivate GtkCellRendererWidgetPrivate;
+typedef struct _Xtkcellrendererwidget        Xtkcellrendererwidget;
+typedef struct _XtkcellrendererwidgetClass   XtkcellrendererwidgetClass;
+typedef struct _XtkcellrendererwidgetPrivate XtkcellrendererwidgetPrivate;
 
-struct _GtkCellRendererWidget
+struct _Xtkcellrendererwidget
 {
   GtkCellRendererPixbuf                parent;
 
   /*< private >*/
-  GtkCellRendererWidgetPrivate *priv;
+  XtkcellrendererwidgetPrivate *priv;
 };
 
-struct _GtkCellRendererWidgetClass
+struct _XtkcellrendererwidgetClass
 {
   GtkCellRendererPixbufClass parent_class;
 
@@ -62,6 +62,11 @@ struct _GtkCellRendererWidgetClass
 
 GType            gtk_cell_renderer_widget_get_type (void) G_GNUC_CONST;
 GtkCellRenderer *gtk_cell_renderer_widget_new      (void);
+
+static void
+gtk_cell_renderer_widget_class_init (XtkcellrendererwidgetClass *klass);
+static void
+gtk_cell_renderer_widget_init (Xtkcellrendererwidget *cell);
 
 G_END_DECLS
 
