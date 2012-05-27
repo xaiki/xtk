@@ -4,7 +4,7 @@
 void treestore_set_widget(GtkTreeStore * tstore, GtkTreeIter * iter,
                            const char * label, GtkWidget * widget)
 {
-  xatrace();   gtk_tree_store_set(tstore, iter, 0, label, 1, FALSE, 3, TRUE, 4, TRUE,
+ gtk_tree_store_set(tstore, iter, 0, label, 1, FALSE, 3, TRUE, 4, TRUE,
                       5, widget, -1);
   printf ("widget is: %p\n", widget);
    //   gtk_object_sink(GTK_OBJECT(widget));
@@ -29,27 +29,27 @@ GtkBox *make_box ()
 
 void test_treeview(GtkScrolledWindow * sw)
 {
-  xatrace();	GtkCellRenderer * r2;
+	GtkCellRenderer * r2;
 
 	GtkSpinner *the_spinner = GTK_SPINNER(gtk_spinner_new());
-  GtkLabel   *the_label   = GTK_LABEL  (gtk_label_new("test label"));
-  GtkBox     *the_box     = make_box();
-   /*gtk_widget_show(GTK_WIDGET(the_spinner));*/
-   printf("new the_spinner = %p\n", the_spinner);
-   printf("new the_label = %p\n", the_label);
-   printf("new the_box = %p\n", the_box);
-   /*   g_signal_connect(G_OBJECT(the_spinner), "destroy",
-                    G_CALLBACK(the_spinner_destroyed), 0);
-   g_signal_connect(G_OBJECT(the_spinner), "expose-event",
-                    G_CALLBACK(the_spinner_is_exposed), 0);
-   */
-   GtkTreeStore * tstore = gtk_tree_store_new(6,
-                           G_TYPE_STRING,  /* label */
-                           G_TYPE_BOOLEAN, /* is_separator */
-                           G_TYPE_STRING,  /* contents */
-                           G_TYPE_BOOLEAN, /* contents.visible */
-                           G_TYPE_BOOLEAN, /* contents.editable */
-                           G_TYPE_OBJECT   /* contents.widget */);
+	GtkLabel   *the_label   = GTK_LABEL  (gtk_label_new("test label"));
+	GtkBox     *the_box     = make_box();
+	/*gtk_widget_show(GTK_WIDGET(the_spinner));*/
+	printf("new the_spinner = %p\n", the_spinner);
+	printf("new the_label = %p\n", the_label);
+	printf("new the_box = %p\n", the_box);
+	/*   g_signal_connect(G_OBJECT(the_spinner), "destroy",
+	     G_CALLBACK(the_spinner_destroyed), 0);
+	     g_signal_connect(G_OBJECT(the_spinner), "expose-event",
+	     G_CALLBACK(the_spinner_is_exposed), 0);
+	*/
+	GtkTreeStore * tstore = gtk_tree_store_new(6,
+						   G_TYPE_STRING,  /* label */
+						   G_TYPE_BOOLEAN, /* is_separator */
+						   G_TYPE_STRING,  /* contents */
+						   G_TYPE_BOOLEAN, /* contents.visible */
+						   G_TYPE_BOOLEAN, /* contents.editable */
+						   G_TYPE_OBJECT   /* contents.widget */);
    GtkWidget * treeview = gtk_tree_view_new_with_model(GTK_TREE_MODEL(tstore));
    /*   g_signal_connect(G_OBJECT(treeview), "expose-event",
                     G_CALLBACK(treeview_expose_model_widgets), 0);
@@ -145,28 +145,8 @@ void test_treeview(GtkScrolledWindow * sw)
    g_object_unref(G_OBJECT(tstore));
 }
 
-GType gtk_cell_renderer_widget_register_type()
-{
-  xatrace();   static const GTypeInfo renderer_widget_info =
-   {
-     sizeof(struct _GtkCellRendererWidgetClass),
-     0,    /* base_init */
-     0,    /* base_finalize */
-     (GClassInitFunc) gtk_cell_renderer_widget_class_init,
-     0,    /* class_finalize */
-     0,    /* class_data */
-     sizeof(GtkCellRendererWidget),
-     0,    /* n_preallocs */
-     (GInstanceInitFunc) gtk_cell_renderer_widget_init,
-   };
-   return g_type_register_static(GTK_TYPE_CELL_RENDERER,
-                                 "xaGtkCellRendererWidget",
-                                 &renderer_widget_info, 0);
-}
-
 int main(int argc, char ** argv)
 {
-  xatrace();
    gtk_init(&argc, &argv);
 //   GtkCellRendererWidget *cell_renderer_widget_type = GTK_CELL_RENDERER_WIDGET(gtk_cell_renderer_widget_register_type());
 
