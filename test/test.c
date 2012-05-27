@@ -64,7 +64,7 @@ void test_treeview(GtkScrolledWindow * sw)
                               "Label", r1, "text", 0, NULL);
    gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), col1);
 
-   r2 = gtk_cell_renderer_widget_new();
+   r2 = xtk_cell_renderer_widget_new();
    GtkTreeViewColumn * col2 = gtk_tree_view_column_new_with_attributes(
                               "Contents", r2, "widget", 5, NULL);
    gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), col2);
@@ -148,7 +148,7 @@ void test_treeview(GtkScrolledWindow * sw)
 int main(int argc, char ** argv)
 {
    gtk_init(&argc, &argv);
-//   GtkCellRendererWidget *cell_renderer_widget_type = GTK_CELL_RENDERER_WIDGET(gtk_cell_renderer_widget_register_type());
+//   GtkCellRendererWidget *cell_renderer_widget_type = XTK_CELL_RENDERER_WIDGET(xtk_cell_renderer_widget_register_type());
 
    GtkWidget * window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
    gtk_window_set_default_size(GTK_WINDOW(window), 500, 300);

@@ -8,14 +8,21 @@ Homepage: <insert the upstream URL, if relevant>
 #Vcs-Git: git://git.debian.org/collab-maint/xtk.git
 #Vcs-Browser: http://git.debian.org/?p=collab-maint/xtk.git;a=summary
 
-Package: xtk-dev
+Package: libxtk-dev
 Section: libdevel
 Architecture: any
-Depends: xtkBROKEN (= ${binary:Version})
+Depends: libxtk-1 (= ${binary:Version}), libgtk-3-0
 Description: <insert up to 60 chars description>
  <insert long description, indented with spaces>
 
-Package: xtkBROKEN
+Package: libxtk-1
+Section: libs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: <insert up to 60 chars description>
+ <insert long description, indented with spaces>
+
+Package: gir1.2-xtk-0.1
 Section: libs
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}

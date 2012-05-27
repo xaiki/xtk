@@ -23,35 +23,35 @@
 #error "Only <gtk/gtk.h> can be included directly."
 #endif
 */
-#ifndef __GTK_CELL_RENDERER_WIDGET_H__
-#define __GTK_CELL_RENDERER_WIDGET_H__
+#ifndef __XTK_CELL_RENDERER_WIDGET_H__
+#define __XTK_CELL_RENDERER_WIDGET_H__
 
 #include <gtk/gtk.h>
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_CELL_RENDERER_WIDGET            (gtk_cell_renderer_widget_get_type ())
-#define GTK_CELL_RENDERER_WIDGET(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_CELL_RENDERER_WIDGET, Xtkcellrendererwidget))
-#define GTK_CELL_RENDERER_WIDGET_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_CELL_RENDERER_WIDGET, XtkcellrendererwidgetClass))
+#define GTK_TYPE_CELL_RENDERER_WIDGET            (xtk_cell_renderer_widget_get_type ())
+#define XTK_CELL_RENDERER_WIDGET(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_CELL_RENDERER_WIDGET, XtkCellRendererWidget))
+#define XTK_CELL_RENDERER_WIDGET_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_CELL_RENDERER_WIDGET, XtkCellRendererWidgetClass))
 #define GTK_IS_CELL_RENDERER_WIDGET(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_CELL_RENDERER_WIDGET))
 #define GTK_IS_CELL_RENDERER_WIDGET_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_CELL_RENDERER_WIDGET))
-#define GTK_CELL_RENDERER_WIDGET_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_CELL_RENDERER_WIDGET, XtkcellrendererwidgetClass))
+#define XTK_CELL_RENDERER_WIDGET_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_CELL_RENDERER_WIDGET, XtkCellRendererWidgetClass))
 
-typedef struct _Xtkcellrendererwidget        Xtkcellrendererwidget;
-typedef struct _XtkcellrendererwidgetClass   XtkcellrendererwidgetClass;
-typedef struct _XtkcellrendererwidgetPrivate XtkcellrendererwidgetPrivate;
+typedef struct _XtkCellRendererWidget        XtkCellRendererWidget;
+typedef struct _XtkCellRendererWidgetClass   XtkCellRendererWidgetClass;
+typedef struct _XtkCellRendererWidgetPrivate XtkCellRendererWidgetPrivate;
 
-struct _Xtkcellrendererwidget
+struct _XtkCellRendererWidget
 {
-  GtkCellRendererPixbuf                parent;
+  GtkCellRenderer                parent;
 
   /*< private >*/
-  XtkcellrendererwidgetPrivate *priv;
+  XtkCellRendererWidgetPrivate *priv;
 };
 
-struct _XtkcellrendererwidgetClass
+struct _XtkCellRendererWidgetClass
 {
-  GtkCellRendererPixbufClass parent_class;
+  GtkCellRendererClass parent_class;
 
   /* Padding for future expansion */
   void (*_gtk_reserved1) (void);
@@ -60,14 +60,14 @@ struct _XtkcellrendererwidgetClass
   void (*_gtk_reserved4) (void);
 };
 
-GType            gtk_cell_renderer_widget_get_type (void) G_GNUC_CONST;
-GtkCellRenderer *gtk_cell_renderer_widget_new      (void);
+GType            xtk_cell_renderer_widget_get_type (void) G_GNUC_CONST;
+GtkCellRenderer *xtk_cell_renderer_widget_new      (void);
 
 static void
-gtk_cell_renderer_widget_class_init (XtkcellrendererwidgetClass *klass);
+xtk_cell_renderer_widget_class_init (XtkCellRendererWidgetClass *klass);
 static void
-gtk_cell_renderer_widget_init (Xtkcellrendererwidget *cell);
+xtk_cell_renderer_widget_init (XtkCellRendererWidget *cell);
 
 G_END_DECLS
 
-#endif /* __GTK_CELL_RENDERER_WIDGET_H__ */
+#endif /* __XTK_CELL_RENDERER_WIDGET_H__ */
