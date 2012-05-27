@@ -56,8 +56,8 @@
  * to a #GtkCellRendererProgress for displaying indefinite activity,
  * instead of actual progress.
  *
- * To start the animation in a cell, set the #Xtkcellrendererwidget:active
- * property to %TRUE and increment the #Xtkcellrendererwidget:pulse property
+ * To start the animation in a cell, set the #XtkCellRendererWidget:active
+ * property to %TRUE and increment the #XtkCellRendererWidget:pulse property
  * at regular intervals. The usual way to set the cell renderer properties
  * for each cell is to bind them to columns in your tree model using e.g.
  * gtk_tree_view_column_add_attribute().
@@ -73,22 +73,22 @@ enum {
   PROP_SIZE
 };
 
-struct _XtkcellrendererwidgetPrivate
+struct _XtkCellRendererWidgetPrivate
 {
   GHashTable *whash;
 	GtkWidget *widget;
 };
 
 
-static void gtk_cell_renderer_widget_get_property (GObject         *object,
+static void xtk_cell_renderer_widget_get_property (GObject         *object,
                                                     guint            param_id,
                                                     GValue          *value,
                                                     GParamSpec      *pspec);
-static void gtk_cell_renderer_widget_set_property (GObject         *object,
+static void xtk_cell_renderer_widget_set_property (GObject         *object,
                                                     guint            param_id,
                                                     const GValue    *value,
                                                     GParamSpec      *pspec);
-static void gtk_cell_renderer_widget_get_size     (GtkCellRenderer *cell,
+static void xtk_cell_renderer_widget_get_size     (GtkCellRenderer *cell,
                                                     GtkWidget          *widget,
                                                     const GdkRectangle *cell_area,
                                                     gint               *x_offset,
@@ -96,7 +96,7 @@ static void gtk_cell_renderer_widget_get_size     (GtkCellRenderer *cell,
                                                     gint               *width,
                                                     gint               *height);
 static GtkCellEditable *
-gtk_cell_renderer_widget_start_editing (GtkCellRenderer     *cell,
+xtk_cell_renderer_widget_start_editing (GtkCellRenderer     *cell,
                                        GdkEvent            *event,
                                        GtkWidget           *widget,
                                        const gchar         *path,
@@ -104,30 +104,30 @@ gtk_cell_renderer_widget_start_editing (GtkCellRenderer     *cell,
                                        const GdkRectangle  *cell_area,
                                        GtkCellRendererState flags);
 
-static void gtk_cell_renderer_widget_render       (GtkCellRenderer      *cell,
+static void xtk_cell_renderer_widget_render       (GtkCellRenderer      *cell,
                                                     cairo_t              *cr,
                                                     GtkWidget            *widget,
                                                     const GdkRectangle   *background_area,
                                                     const GdkRectangle   *cell_area,
                                                     GtkCellRendererState  flags);
 
-G_DEFINE_TYPE (Xtkcellrendererwidget, gtk_cell_renderer_widget, GTK_TYPE_CELL_RENDERER)
+G_DEFINE_TYPE (XtkCellRendererWidget, xtk_cell_renderer_widget, GTK_TYPE_CELL_RENDERER)
 
 static void
-gtk_cell_renderer_widget_class_init (XtkcellrendererwidgetClass *klass)
+xtk_cell_renderer_widget_class_init (XtkCellRendererWidgetClass *klass)
 {
   xatrace();
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   GtkCellRendererClass *cell_class = GTK_CELL_RENDERER_CLASS (klass);
 
-  object_class->get_property = gtk_cell_renderer_widget_get_property;
-  object_class->set_property = gtk_cell_renderer_widget_set_property;
+  object_class->get_property = xtk_cell_renderer_widget_get_property;
+  object_class->set_property = xtk_cell_renderer_widget_set_property;
 
-  cell_class->get_size = gtk_cell_renderer_widget_get_size;
-  cell_class->render = gtk_cell_renderer_widget_render;
-  cell_class->start_editing = gtk_cell_renderer_widget_start_editing;
+  cell_class->get_size = xtk_cell_renderer_widget_get_size;
+  cell_class->render = xtk_cell_renderer_widget_render;
+  cell_class->start_editing = xtk_cell_renderer_widget_start_editing;
 
-  /* Xtkcellrendererwidget:active:
+  /* XtkCellRendererWidget:active:
    *
    * Whether the widget is active (ie. shown) in the cell
    *
@@ -141,7 +141,7 @@ gtk_cell_renderer_widget_class_init (XtkcellrendererwidgetClass *klass)
                                                          FALSE,
                                                          G_PARAM_READWRITE));
   /**
-   * Xtkcellrendererwidget:widget:
+   * XtkCellRendererWidget:widget:
    *
    * the #GtkWidget to attach to this cell.
    * Ideally this should be automatic, but there is still lots of vodo for me there.
@@ -156,7 +156,7 @@ gtk_cell_renderer_widget_class_init (XtkcellrendererwidgetClass *klass)
                                                         GTK_TYPE_WIDGET,
                                                         G_PARAM_READWRITE));
   /**
-   * Xtkcellrendererwidget:size:
+   * XtkCellRendererWidget:size:
    *
    * The #GtkIconSize value that specifies the size of the rendered widget.
    *
@@ -171,11 +171,11 @@ gtk_cell_renderer_widget_class_init (XtkcellrendererwidgetClass *klass)
                                                       G_PARAM_READWRITE));
 
 
-  g_type_class_add_private (object_class, sizeof (XtkcellrendererwidgetPrivate));
+  g_type_class_add_private (object_class, sizeof (XtkCellRendererWidgetPrivate));
 }
 
 static gboolean
-gtk_cell_renderer_widget_cell_draw (GtkWidget *widget,
+xtk_cell_renderer_widget_cell_draw (GtkWidget *widget,
                                     cairo_t   *cr,
                                     gpointer   user_data)
 {
@@ -191,7 +191,7 @@ gtk_cell_renderer_widget_cell_draw (GtkWidget *widget,
 }
 
 static gboolean
-gtk_cell_renderer_widget_cell_queue_redraw (GtkWidget *window,
+xtk_cell_renderer_widget_cell_queue_redraw (GtkWidget *window,
                                             GdkEvent  *event,
                                             GtkWidget *treeview)
 {
@@ -205,10 +205,10 @@ static void
 gtk_offscreen_window_damaged_cb (GtkWidget *window, GdkEvent *event, GtkWidget *cell)
 {
 
-  XtkcellrendererwidgetPrivate *priv = GTK_CELL_RENDERER_WIDGET(cell)->priv;
+  XtkCellRendererWidgetPrivate *priv = XTK_CELL_RENDERER_WIDGET(cell)->priv;
 
 /*  if (priv->treeview)
-    gtk_cell_renderer_widget_cell_queue_redraw (window, event, priv->treeview); * /
+    xtk_cell_renderer_widget_cell_queue_redraw (window, event, priv->treeview); * /
 
   if (! priv->hackimg)
     return;
@@ -218,19 +218,19 @@ gtk_offscreen_window_damaged_cb (GtkWidget *window, GdkEvent *event, GtkWidget *
 }
 */
 static void
-gtk_cell_renderer_widget_init (Xtkcellrendererwidget *cell)
+xtk_cell_renderer_widget_init (XtkCellRendererWidget *cell)
 {
   xatrace();
 
   cell->priv = G_TYPE_INSTANCE_GET_PRIVATE (cell,
                                             GTK_TYPE_CELL_RENDERER_WIDGET,
-                                            XtkcellrendererwidgetPrivate);
+                                            XtkCellRendererWidgetPrivate);
 
   cell->priv->whash = g_hash_table_new(NULL, NULL);
 }
 
 /**
- * gtk_cell_renderer_widget_new:
+ * xtk_cell_renderer_widget_new:
  *
  * Returns a new cell renderer which will show a #GtkWidget.
  *
@@ -239,19 +239,19 @@ gtk_cell_renderer_widget_init (Xtkcellrendererwidget *cell)
  * Since: 2.20
  */
 GtkCellRenderer *
-gtk_cell_renderer_widget_new (void)
+xtk_cell_renderer_widget_new (void)
 {
   xatrace();  return g_object_new (GTK_TYPE_CELL_RENDERER_WIDGET, NULL);
 }
 
 static void
-gtk_cell_renderer_widget_get_property (GObject    *object,
+xtk_cell_renderer_widget_get_property (GObject    *object,
                                         guint       param_id,
                                         GValue     *value,
                                         GParamSpec *pspec)
 {
-  xatrace();  Xtkcellrendererwidget *cell = GTK_CELL_RENDERER_WIDGET (object);
-  XtkcellrendererwidgetPrivate *priv = cell->priv;
+  xatrace();  XtkCellRendererWidget *cell = XTK_CELL_RENDERER_WIDGET (object);
+  XtkCellRendererWidgetPrivate *priv = cell->priv;
 
   switch (param_id)
     {
@@ -264,7 +264,7 @@ gtk_cell_renderer_widget_get_property (GObject    *object,
 }
 
 static gboolean
-gtk_cell_renderer_widget_offscreen_draw (GtkWidget *widget,
+xtk_cell_renderer_widget_offscreen_draw (GtkWidget *widget,
                                          cairo_t   *cr,
                                          gpointer  userdata)
 {
@@ -279,13 +279,13 @@ gtk_cell_renderer_widget_offscreen_draw (GtkWidget *widget,
 
 
 static void
-gtk_cell_renderer_widget_set_property (GObject      *object,
+xtk_cell_renderer_widget_set_property (GObject      *object,
                                         guint         param_id,
                                         const GValue *value,
                                         GParamSpec   *pspec)
 {
-  xatrace();  Xtkcellrendererwidget *cell = GTK_CELL_RENDERER_WIDGET (object);
-  XtkcellrendererwidgetPrivate *priv = cell->priv;
+  xatrace();  XtkCellRendererWidget *cell = XTK_CELL_RENDERER_WIDGET (object);
+  XtkCellRendererWidgetPrivate *priv = cell->priv;
   GtkWidget *window;
 
   switch (param_id)
@@ -313,7 +313,7 @@ gtk_cell_renderer_widget_set_property (GObject      *object,
         gtk_widget_set_app_paintable (window, TRUE);
 
         g_signal_connect (G_OBJECT(window), "draw",
-                          G_CALLBACK (gtk_cell_renderer_widget_offscreen_draw),
+                          G_CALLBACK (xtk_cell_renderer_widget_offscreen_draw),
                           NULL);
         gtk_widget_show_all (window);
       }
@@ -326,7 +326,7 @@ gtk_cell_renderer_widget_set_property (GObject      *object,
 }
 
 static void
-gtk_cell_renderer_widget_get_size (GtkCellRenderer    *cellr,
+xtk_cell_renderer_widget_get_size (GtkCellRenderer    *cellr,
                                     GtkWidget          *widget,
                                     const GdkRectangle *cell_area,
                                     gint               *x_offset,
@@ -334,8 +334,8 @@ gtk_cell_renderer_widget_get_size (GtkCellRenderer    *cellr,
                                     gint               *width,
                                     gint               *height)
 {
-  xatrace();  Xtkcellrendererwidget *cell = GTK_CELL_RENDERER_WIDGET (cellr);
-  XtkcellrendererwidgetPrivate *priv = cell->priv;
+  xatrace();  XtkCellRendererWidget *cell = XTK_CELL_RENDERER_WIDGET (cellr);
+  XtkCellRendererWidgetPrivate *priv = cell->priv;
 
   if (x_offset)
     *x_offset = 0;
@@ -364,10 +364,10 @@ gtk_cell_renderer_widget_get_size (GtkCellRenderer    *cellr,
   return;
 }
 
-#define GTK_CELL_RENDERER_WIDGET_PATH "gtk-cell-renderer-widget-path"
+#define XTK_CELL_RENDERER_WIDGET_PATH "gtk-cell-renderer-widget-path"
 
 static GtkCellEditable *
-gtk_cell_renderer_widget_start_editing (GtkCellRenderer     *cellr,
+xtk_cell_renderer_widget_start_editing (GtkCellRenderer     *cellr,
                                         GdkEvent            *event,
                                         GtkWidget           *treeview,
                                         const gchar         *path,
@@ -375,15 +375,15 @@ gtk_cell_renderer_widget_start_editing (GtkCellRenderer     *cellr,
                                         const GdkRectangle  *cell_area,
                                         GtkCellRendererState flags)
 {
-  xatrace();  Xtkcellrendererwidget *cell = GTK_CELL_RENDERER_WIDGET (cellr);
-  XtkcellrendererwidgetPrivate *priv = cell->priv;
+  xatrace();  XtkCellRendererWidget *cell = XTK_CELL_RENDERER_WIDGET (cellr);
+  XtkCellRendererWidgetPrivate *priv = cell->priv;
   GtkWidget *widget = priv->widget;
 
   if (!widget)
     printf ("NO WIDGET !!!!\n");
 
   g_object_set_data_full (G_OBJECT (widget),
-                          GTK_CELL_RENDERER_WIDGET_PATH,
+                          XTK_CELL_RENDERER_WIDGET_PATH,
                           g_strdup (path), g_free);
 
   gtk_widget_show(widget);
@@ -400,15 +400,15 @@ get_first_child (GtkWidget *p)
 }
 
 static void
-gtk_cell_renderer_widget_render (GtkCellRenderer      *cellr,
+xtk_cell_renderer_widget_render (GtkCellRenderer      *cellr,
                                   cairo_t              *cr,
                                   GtkWidget            *treeview,
                                   const GdkRectangle   *background_area,
                                   const GdkRectangle   *cell_area,
                                   GtkCellRendererState  flags)
 {
-  xatrace();  Xtkcellrendererwidget *cell = GTK_CELL_RENDERER_WIDGET (cellr);
-  XtkcellrendererwidgetPrivate *priv = cell->priv;
+  xatrace();  XtkCellRendererWidget *cell = XTK_CELL_RENDERER_WIDGET (cellr);
+  XtkCellRendererWidgetPrivate *priv = cell->priv;
   GtkWidget *widget = priv->widget;
   GtkWidget *window;
   GtkAllocation *alloc = (GtkAllocation *) cell_area;
@@ -431,7 +431,7 @@ gtk_cell_renderer_widget_render (GtkCellRenderer      *cellr,
 	  return;
   }
 
-  gtk_cell_renderer_widget_get_size (cellr, treeview, (GdkRectangle *) cell_area,
+  xtk_cell_renderer_widget_get_size (cellr, treeview, (GdkRectangle *) cell_area,
                                       &pix_rect.x, &pix_rect.y,
                                       &pix_rect.width, &pix_rect.height);
   g_object_get (cellr,
@@ -462,21 +462,21 @@ gtk_cell_renderer_widget_render (GtkCellRenderer      *cellr,
   cairo_restore (cr);
 }
 
-GType gtk_cell_renderer_widget_register_type()
+GType xtk_cell_renderer_widget_register_type()
 {
      static const GTypeInfo renderer_widget_info =
    {
-     sizeof(struct _XtkcellrendererwidgetClass),
+     sizeof(struct _XtkCellRendererWidgetClass),
      0,    /* base_init */
      0,    /* base_finalize */
-     (GClassInitFunc) gtk_cell_renderer_widget_class_init,
+     (GClassInitFunc) xtk_cell_renderer_widget_class_init,
      0,    /* class_finalize */
      0,    /* class_data */
-     sizeof(Xtkcellrendererwidget),
+     sizeof(XtkCellRendererWidget),
      0,    /* n_preallocs */
-     (GInstanceInitFunc) gtk_cell_renderer_widget_init,
+     (GInstanceInitFunc) xtk_cell_renderer_widget_init,
    };
    return g_type_register_static(GTK_TYPE_CELL_RENDERER,
-                                 "Xtkcellrendererwidget",
+                                 "XtkCellRendererWidget",
                                  &renderer_widget_info, 0);
 }
