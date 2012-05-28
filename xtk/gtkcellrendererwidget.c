@@ -63,7 +63,12 @@
  * gtk_tree_view_column_add_attribute().
  */
 
+#ifdef DEBUG
 #define xatrace() printf("%s:%d:%s():\n" , __FILE__, __LINE__, __func__)
+#else
+#define xatrace()
+#define printf(args...)
+#endif
 
 enum {
   PROP_0,
