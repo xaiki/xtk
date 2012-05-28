@@ -277,6 +277,15 @@ xtk_cell_renderer_widget_offscreen_draw (GtkWidget *widget,
   return FALSE;
 }
 
+static void
+xtk_cell_renderer_widget_offscreen_destroy (GtkWidget *widget,
+					    XtkCellRendererWidgetPrivate *priv)
+{
+	GtkWidget *window = g_hash_table_lookup (priv->whash, widget);
+	g_assert(window);
+	gtk_widget_destroy (window);
+	g_hash_table_remove (priv->whash, widget);
+}
 
 static void
 xtk_cell_renderer_widget_set_property (GObject      *object,
@@ -311,6 +320,10 @@ xtk_cell_renderer_widget_set_property (GObject      *object,
         g_hash_table_insert (priv->whash, priv->widget, window);
         gtk_container_add (GTK_CONTAINER (window), priv->widget);
         gtk_widget_set_app_paintable (window, TRUE);
+
+	g_signal_connect (priv->widget, "destroy",
+			  G_CALLBACK (xtk_cell_renderer_widget_offscreen_destroy),
+			  priv);
 
         g_signal_connect (G_OBJECT(window), "draw",
                           G_CALLBACK (xtk_cell_renderer_widget_offscreen_draw),
