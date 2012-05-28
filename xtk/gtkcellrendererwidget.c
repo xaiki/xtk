@@ -374,6 +374,20 @@ xtk_cell_renderer_widget_get_size (GtkCellRenderer    *cellr,
   if (height)
     *height = natural_size.height;
 
+  if (cell_area) {
+	  if (gtk_widget_get_hexpand (priv->widget))
+		  if (width)
+			  *width = MAX(*width, cell_area->width);
+	  if (gtk_widget_get_vexpand (priv->widget))
+		  if (height)
+			  *height = MAX(*height, cell_area->height);
+  }
+
+  if (width && height) {
+	  GtkWidget *window = g_hash_table_lookup (priv->whash, priv->widget);
+	  gtk_widget_set_size_request (window, *width, *height);
+	  printf ("++-- requesting: %dx%d\n", *width, *height);
+  }
   return;
 }
 
