@@ -35,6 +35,7 @@ void test_treeview(GtkScrolledWindow * sw)
 	GtkSpinner *the_spinner = GTK_SPINNER(gtk_spinner_new());
 	GtkLabel   *the_label   = GTK_LABEL  (gtk_label_new("test label"));
 	GtkBox     *the_box     = make_box();
+	gtk_spinner_start (the_spinner);
 	/*gtk_widget_show(GTK_WIDGET(the_spinner));*/
 	printf("new the_spinner = %p\n", the_spinner);
 	printf("new the_label = %p\n", the_label);
@@ -44,13 +45,14 @@ void test_treeview(GtkScrolledWindow * sw)
 	     g_signal_connect(G_OBJECT(the_spinner), "expose-event",
 	     G_CALLBACK(the_spinner_is_exposed), 0);
 	*/
-	GtkTreeStore * tstore = gtk_tree_store_new(6,
+	GtkTreeStore * tstore = gtk_tree_store_new(7,
 						   G_TYPE_STRING,  /* label */
 						   G_TYPE_BOOLEAN, /* is_separator */
 						   G_TYPE_STRING,  /* contents */
 						   G_TYPE_BOOLEAN, /* contents.visible */
 						   G_TYPE_BOOLEAN, /* contents.editable */
-						   G_TYPE_OBJECT   /* contents.widget */);
+						   G_TYPE_OBJECT,  /* contents.widget */
+						   G_TYPE_BOOLEAN);/* contents.animate */
    GtkWidget * treeview = gtk_tree_view_new_with_model(GTK_TREE_MODEL(tstore));
    /*   g_signal_connect(G_OBJECT(treeview), "expose-event",
                     G_CALLBACK(treeview_expose_model_widgets), 0);
@@ -66,8 +68,9 @@ void test_treeview(GtkScrolledWindow * sw)
    gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), col1);
 
    r2 = xtk_cell_renderer_widget_new();
-   GtkTreeViewColumn * col2 = gtk_tree_view_column_new_with_attributes(
-                              "Contents", r2, "widget", 5, NULL);
+   GtkTreeViewColumn * col2 = gtk_tree_view_column_new_with_attributes("Contents", r2,
+								       "widget",  5,
+								       "animate", 6, NULL);
    gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), col2);
 
    gtk_tree_view_set_rules_hint(GTK_TREE_VIEW(treeview), TRUE);
@@ -102,10 +105,16 @@ void test_treeview(GtkScrolledWindow * sw)
    gtk_tree_store_append(tstore, &gi, &ci);
    gtk_tree_store_set(tstore, &gi, 0, "Grandchild 2.1.1", 1, FALSE,
                       2, "Value 2.1.1", 3, FALSE, 4, TRUE, 5, GTK_WIDGET(the_label), -1);
+   //		      6, TRUE, -1);
 
    gtk_tree_store_append(tstore, &gi, &ci);
-   gtk_tree_store_set(tstore, &gi, 0, "Grandchild 2.1.2", 1, FALSE,
-                      2, "Value 2.1.2", 3, TRUE, 4, TRUE, 5, GTK_WIDGET(the_spinner), -1);
+   gtk_tree_store_set(tstore, &gi, 0, "Grandchild 2.1.2",
+		      1, FALSE,
+                      2, "Value 2.1.2",
+		      3, TRUE,
+		      4, TRUE,
+		      5, GTK_WIDGET(the_spinner),// -1);
+   		      6, TRUE, -1);
 
    gtk_tree_store_append(tstore, &gi, &ci);
    gtk_tree_store_set(tstore, &gi, 0, "Grandchild 2.1.3", 1, FALSE,

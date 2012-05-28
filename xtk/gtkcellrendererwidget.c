@@ -73,15 +73,15 @@
 enum {
   PROP_0,
   PROP_WIDGET,
-  PROP_ACTIVE,
-  PROP_PULSE,
-  PROP_SIZE
+  PROP_ANIMATE, /* HACK */
 };
 
 struct _XtkCellRendererWidgetPrivate
 {
-  GHashTable *whash;
-	GtkWidget *widget;
+	GHashTable *whash;
+	GtkWidget  *widget;
+  GtkWidget  *view;
+  gboolean   animate_pending;
 };
 
 
@@ -132,19 +132,6 @@ xtk_cell_renderer_widget_class_init (XtkCellRendererWidgetClass *klass)
   cell_class->render = xtk_cell_renderer_widget_render;
   cell_class->start_editing = xtk_cell_renderer_widget_start_editing;
 
-  /* XtkCellRendererWidget:active:
-   *
-   * Whether the widget is active (ie. shown) in the cell
-   *
-   * Since: 2.20
-   */
-  g_object_class_install_property (object_class,
-                                   PROP_ACTIVE,
-                                   g_param_spec_boolean ("active",
-                                                         "Active",
-                                                         "Whether the widget is active (ie. shown) in the cell",
-                                                         FALSE,
-                                                         G_PARAM_READWRITE));
   /**
    * XtkCellRendererWidget:widget:
    *
@@ -161,19 +148,20 @@ xtk_cell_renderer_widget_class_init (XtkCellRendererWidgetClass *klass)
                                                         GTK_TYPE_WIDGET,
                                                         G_PARAM_READWRITE));
   /**
-   * XtkCellRendererWidget:size:
+   * XtkCellRendererWidget:animate:
    *
-   * The #GtkIconSize value that specifies the size of the rendered widget.
+   * Should the widget animate the content.
+   * Warning: this is a huge hack and might be CPU intensive.
    *
    * Since: 2.20
    */
   g_object_class_install_property (object_class,
-                                   PROP_SIZE,
-                                   g_param_spec_enum ("size",
-                                                      "Size",
-                                                      "The GtkIconSize value that specifies the size of the rendered widget",
-                                                      GTK_TYPE_ICON_SIZE, GTK_ICON_SIZE_MENU,
-                                                      G_PARAM_READWRITE));
+                                   PROP_ANIMATE,
+                                   g_param_spec_boolean ("animate",
+                                                         "Animate",
+                                                         "Should the widget be animated",
+                                                         FALSE,
+                                                         G_PARAM_READWRITE));
 
 
   g_type_class_add_private (object_class, sizeof (XtkCellRendererWidgetPrivate));
@@ -292,11 +280,27 @@ xtk_cell_renderer_widget_offscreen_destroy (GtkWidget *widget,
 	g_hash_table_remove (priv->whash, widget);
 }
 
+static gboolean
+xtk_cell_renderer_widget_offscreen_damage (GtkWidget *widget,
+                                           GdkEvent  *event,
+                                           XtkCellRendererWidgetPrivate *priv)
+{
+  /* this hack has been taken from transmission */
+  /* since the cell size has changed, we need gtktreeview to revalidate
+   * its fixed-height mode values. Unfortunately there's not an API call
+   * for that, but it *does* revalidate when it thinks the style's been tweaked */
+
+	if (priv->view)
+		g_signal_emit_by_name( priv->view, "style-updated", NULL, NULL );
+
+	return FALSE;
+}
+
 static void
 xtk_cell_renderer_widget_set_property (GObject      *object,
-                                        guint         param_id,
-                                        const GValue *value,
-                                        GParamSpec   *pspec)
+                                       guint         param_id,
+                                       const GValue *value,
+                                       GParamSpec   *pspec)
 {
   xatrace();  XtkCellRendererWidget *cell = XTK_CELL_RENDERER_WIDGET (object);
   XtkCellRendererWidgetPrivate *priv = cell->priv;
@@ -305,7 +309,6 @@ xtk_cell_renderer_widget_set_property (GObject      *object,
   switch (param_id)
     {
     case PROP_WIDGET:
-
       window = g_value_get_object (value);
       if (! window) {
         priv->widget = NULL;
@@ -326,9 +329,16 @@ xtk_cell_renderer_widget_set_property (GObject      *object,
         gtk_container_add (GTK_CONTAINER (window), priv->widget);
         gtk_widget_set_app_paintable (window, TRUE);
 
-	g_signal_connect (priv->widget, "destroy",
-			  G_CALLBACK (xtk_cell_renderer_widget_offscreen_destroy),
-			  priv);
+        if (priv->animate_pending) {
+          printf  ("animating for widget: %p, window: %p\n", priv->widget, window);
+          g_signal_connect (window, "damage-event",
+                            G_CALLBACK (xtk_cell_renderer_widget_offscreen_damage),
+                            priv);
+          priv->animate_pending = FALSE;
+        }
+        g_signal_connect (priv->widget, "destroy",
+                          G_CALLBACK (xtk_cell_renderer_widget_offscreen_destroy),
+                          priv);
 
         g_signal_connect (G_OBJECT(window), "draw",
                           G_CALLBACK (xtk_cell_renderer_widget_offscreen_draw),
@@ -337,6 +347,9 @@ xtk_cell_renderer_widget_set_property (GObject      *object,
       }
 
       printf ("%p:%p, setting widget to: %p, on window: %p\n", object, priv, priv->widget, window);
+      break;
+    case PROP_ANIMATE:
+      priv->animate_pending  = g_value_get_boolean (value);
       break;
     default:
 	    G_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
@@ -354,6 +367,9 @@ xtk_cell_renderer_widget_get_size (GtkCellRenderer    *cellr,
 {
   xatrace();  XtkCellRendererWidget *cell = XTK_CELL_RENDERER_WIDGET (cellr);
   XtkCellRendererWidgetPrivate *priv = cell->priv;
+
+  if (! priv->view)
+    priv->view = widget;
 
   if (x_offset)
     *x_offset = 0;
