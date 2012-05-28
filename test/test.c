@@ -24,6 +24,7 @@ GtkBox *make_box ()
   gtk_box_pack_start (GTK_BOX(box), GTK_WIDGET(label),   TRUE, TRUE, 0);
   gtk_box_pack_start (GTK_BOX(box), GTK_WIDGET(button),  TRUE, TRUE, 0);
 
+  gtk_widget_set_hexpand (box, TRUE);
   return GTK_BOX(box);
 }
 
